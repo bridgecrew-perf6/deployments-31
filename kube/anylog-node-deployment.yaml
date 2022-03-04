@@ -1,0 +1,171 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f /home/anylog/deployments/docker-compose/docker-compose.yml
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: anylog-node
+  name: anylog-node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: anylog-node
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f /home/anylog/deployments/docker-compose/docker-compose.yml
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: anylog-node
+    spec:
+      containers:
+        - env:
+            - name: ANYLOG_BROKER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: ANYLOG_BROKER_PORT
+                  name: envs-anylog_node-env
+            - name: ANYLOG_REST_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: ANYLOG_REST_PORT
+                  name: envs-anylog_node-env
+            - name: ANYLOG_SERVER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: ANYLOG_SERVER_PORT
+                  name: envs-anylog_node-env
+            - name: CLUTSER_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: CLUTSER_NAME
+                  name: envs-anylog_node-env
+            - name: COMPANY_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: COMPANY_NAME
+                  name: envs-anylog_node-env
+            - name: DB_IP
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_IP
+                  name: envs-anylog_node-env
+            - name: DB_PASSWD
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_PASSWD
+                  name: envs-anylog_node-env
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_PORT
+                  name: envs-anylog_node-env
+            - name: DB_TYPE
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_TYPE
+                  name: envs-anylog_node-env
+            - name: DB_USER
+              valueFrom:
+                configMapKeyRef:
+                  key: DB_USER
+                  name: envs-anylog_node-env
+            - name: DEFAULT_DBMS
+              valueFrom:
+                configMapKeyRef:
+                  key: DEFAULT_DBMS
+                  name: envs-anylog_node-env
+            - name: ENABLE_PARTITION
+              valueFrom:
+                configMapKeyRef:
+                  key: ENABLE_PARTITION
+                  name: envs-anylog_node-env
+            - name: MASTER_NODE
+              valueFrom:
+                configMapKeyRef:
+                  key: MASTER_NODE
+                  name: envs-anylog_node-env
+            - name: MQTT_ENABLE
+              valueFrom:
+                configMapKeyRef:
+                  key: MQTT_ENABLE
+                  name: envs-anylog_node-env
+            - name: NODE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: NODE_NAME
+                  name: envs-anylog_node-env
+            - name: NODE_TYPE
+              valueFrom:
+                configMapKeyRef:
+                  key: NODE_TYPE
+                  name: envs-anylog_node-env
+            - name: PARTITION_COLUMN
+              valueFrom:
+                configMapKeyRef:
+                  key: PARTITION_COLUMN
+                  name: envs-anylog_node-env
+            - name: PARTITION_INTERVAL
+              valueFrom:
+                configMapKeyRef:
+                  key: PARTITION_INTERVAL
+                  name: envs-anylog_node-env
+            - name: PARTITION_KEEP
+              valueFrom:
+                configMapKeyRef:
+                  key: PARTITION_KEEP
+                  name: envs-anylog_node-env
+            - name: PARTITION_SYNC
+              valueFrom:
+                configMapKeyRef:
+                  key: PARTITION_SYNC
+                  name: envs-anylog_node-env
+            - name: SYNC_TIME
+              valueFrom:
+                configMapKeyRef:
+                  key: SYNC_TIME
+                  name: envs-anylog_node-env
+            - name: TABLE_NAME
+              valueFrom:
+                configMapKeyRef:
+                  key: TABLE_NAME
+                  name: envs-anylog_node-env
+          image: anylogco/anylog-network:aarna
+          name: anylog-node
+          ports:
+            - containerPort: 32048
+            - containerPort: 32049
+            - containerPort: 32050
+          resources: {}
+          stdin: true
+          tty: true
+          volumeMounts:
+            - mountPath: /app/AnyLog-Network/anylog
+              name: anylog-node-anylog
+            - mountPath: /app/AnyLog-Network/blockchain
+              name: anylog-node-blockchain
+            - mountPath: /app/AnyLog-Network/data
+              name: anylog-node-data
+            - mountPath: /app/AnyLog-Network/scripts
+              name: anylog-node-local-scripts
+      restartPolicy: Always
+      volumes:
+        - name: anylog-node-anylog
+          persistentVolumeClaim:
+            claimName: anylog-node-anylog
+        - name: anylog-node-blockchain
+          persistentVolumeClaim:
+            claimName: anylog-node-blockchain
+        - name: anylog-node-data
+          persistentVolumeClaim:
+            claimName: anylog-node-data
+        - name: anylog-node-local-scripts
+          persistentVolumeClaim:
+            claimName: anylog-node-local-scripts
+status: {}
