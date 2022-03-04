@@ -11,7 +11,7 @@ data:
   ANYLOG_SERVER_PORT: "32048"
   CLUTSER_NAME: aarna-cluster1
   COMPANY_NAME: Aarna
-  DB_IP: postgres
+  DB_IP: database
   DB_PASSWD: demo
   DB_PORT: "5432"
   DB_TYPE: psql
