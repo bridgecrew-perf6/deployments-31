@@ -34,6 +34,12 @@ git clone https://github.com/AnyLog-co/AnyLog-API
 bash $HOME/deployments//credentials.sh ${DOCKER_PASSWORD}
 ```
 
+4. Deploy Postgres Database - if not deployed AnyLog will use [SQLite](https://sqlite.com/index.html) (no need to make any changes)
+```commandline
+helm install --generate-name $HOME/deployments/helm/postgres
+```
+
+
 ### Master Node 
 **Master Node** is a "notary" system between other nodes in the network via either a public or private blockchain.
 The process will deploy a postgres database as well as an AnyLog node which will create a new database (called _blockchain_), 
@@ -48,7 +54,7 @@ machines.
 **Query Node** is a node dedicated to querying operator nodes, as well as generating reports using BI tools.  
 1. On the same machine, or a machine that's accessible by the ndoe, install [Grafana](https://grafana.com/docs/grafana/latest/installation/) 
 or other BI tool in order to [generate reports](https://github.com/AnyLog-co/documentation/tree/os-dev/northbound%20connectors) 
-of the data.   
+of the data. Docker deployment of Grafana can be found [here](grafana.sh) 
 
    
 ### Standalone 
