@@ -35,7 +35,7 @@ bash $HOME/deployments//credentials.sh ${DOCKER_PASSWORD}
 ```
 
 4. Deploy Postgres Database - if not deployed AnyLog will use [SQLite](https://sqlite.com/index.html) (no need to make any changes)
-```commandline
+```bash
 helm install --generate-name $HOME/deployments/helm/postgres
 ```
 
@@ -52,10 +52,17 @@ machines.
 
 ### Query Node 
 **Query Node** is a node dedicated to querying operator nodes, as well as generating reports using BI tools.  
-1. On the same machine, or a machine that's accessible by the ndoe, install [Grafana](https://grafana.com/docs/grafana/latest/installation/) 
-or other BI tool in order to [generate reports](https://github.com/AnyLog-co/documentation/tree/os-dev/northbound%20connectors) 
-of the data. Docker deployment of Grafana can be found [here](grafana.sh) 
+1. Deploy [AnyLog GUI](https://github.com/AnyLog-co/AnyLog-GUI) and our proprietary [Remote-CLI](https://github.com/AnyLog-co/Remote-CLI)
+```bash
+helm install --generate-name $HOME/deployments/helm/anylog-tools
+```
 
+2. On the same machine, or a machine that's accessible by the ndoe, install [Grafana](https://grafana.com/docs/grafana/latest/installation/) 
+or other BI tool in order to [generate reports](https://github.com/AnyLog-co/documentation/tree/os-dev/northbound%20connectors) 
+of the data. Docker deployment of Grafana can be found [here](grafana.sh)
+```bash
+helm install --generate-name $HOME/deployments/helm/grafana
+```
    
 ### Standalone 
 **Standalone Node** deplolies _master_ and _operator_ as a single AnyLog instance. For the offical deployment we wil not 
