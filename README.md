@@ -41,7 +41,7 @@ helm install --generate-name $HOME/deployments/helm/postgres
 
 
 ### Master Node 
-**Master Node** is a "notary" system between other nodes in the network via either a public or private blockchain.
+[Master Node](helm/anylog-master) is a "notary" system between other nodes in the network via either a public or private blockchain.
 The process will deploy a postgres database as well as an AnyLog node which will create a new database (called _blockchain_), 
 which will contain information about the nodes and tables in the network. All other nodes in the network will sync against it. 
 
@@ -51,7 +51,7 @@ based on the information provided by the operator(s). For our demo, this section
 machines. 
 
 ### Query Node 
-**Query Node** is a node dedicated to querying operator nodes, as well as generating reports using BI tools.  
+[Query Node](helm/anylog-query) is a node dedicated to querying operator nodes, as well as generating reports using BI tools.  
 1. Deploy [AnyLog GUI](https://github.com/AnyLog-co/AnyLog-GUI) and our proprietary [Remote-CLI](https://github.com/AnyLog-co/Remote-CLI)
 ```bash
 helm install --generate-name $HOME/deployments/helm/anylog-tools
@@ -65,7 +65,7 @@ helm install --generate-name $HOME/deployments/helm/grafana
 ```
    
 ### Standalone 
-**Standalone Node** deplolies _master_ and _operator_ as a single AnyLog instance. For the offical deployment we wil not 
+[Standalone Node](helm/anylog-standalone) deploy _master_ and _operator_ as a single AnyLog instance. For the offical deployment we wil not 
 be using this option. However, is avilable for testing purposes. 
 1. Deploy [Standalone Helm Chart](helm/anylog-standalone)
     * Postgres 

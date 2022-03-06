@@ -3,10 +3,10 @@ kind: ConfigMap
 metadata:
   name: node-configuration
   labels:
-    app: anylog-node
+    app: anylog-standalone-node
 data:
   NODE_TYPE: "standalone"
-  NODE_NAME: "aarna-standalone-node"
+  NODE_NAME: "aarana-standalone-node"
   COMPANY_NAME: "Aarna"
   #EXTERNAL_IP: <EXTERNAL IP>
   #LOCAL_IP: <LOCAL IP>
@@ -38,42 +38,42 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  name: anylog-node
+  name: anylog-standalone-node
   labels:
-    app: anylog-node
+    app: anylog-standalone-node
 spec:
   ports:
   - port: 32048
-    name: anylog-node-tcp
+    name: anylog-standalone-node-tcp
   - port: 32049
-    name: anylog-node-rest
+    name: anylog-standalone-node-rest
   - port: 32050
-    name: anylog-node-broker
+    name: anylog-standalone-node-broker
   selector:
-    app: anylog-node
+    app: anylog-standalone-node
   type: NodePort
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: anylog-node
+  name: anylog-standalone-node
   labels:
-    app: anylog-node
+    app: anylog-standalone-node
 spec:
-  serviceName: "anylog-node"
+  serviceName: "anylog-standalone-node"
   replicas: 1
   selector:
     matchLabels:
-      app: anylog-node
+      app: anylog-standalone-node
   template:
     metadata:
       labels:
-        app: anylog-node
+        app: anylog-standalone-node
     spec:
       imagePullSecrets:
       - name: anylogregistrykey
       containers:
-      - name: anylog-node
+      - name: anylog-standalone-node
         image: anylogco/anylog-network:aarna
         imagePullPolicy: IfNotPresent
         envFrom:
