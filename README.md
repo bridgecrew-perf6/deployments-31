@@ -1,131 +1,86 @@
 # Deploying AnyLog 
-The following provides information on how to deploy AnyLog using either as _docker-compose_ or _kubernetes_. 
+This branch is intended for the deployment of [Aarna Network](https://www.aarnanetworks.com/) demo with AnyLog. The demo will include:
+1 _Master_, 3 _Operator_ nodes and a _Query_ node against their [Multi-Cluster Orchestrator](https://www.aarnanetworks.com/amcop).
 
-By default, both deployments deploy an AnyLog single-node with data coming in from a remote MQTT broker.
+Please review the [original README](https://github.com/AnyLog-co/deployments/tree/master/REAME.md) for _docker_ deployment 
 
-Configuration can be found in the [env](docker-compose/envs) for docker-compose and in the actual YAML files for kubernetes and helm deployments. 
 
-## Requirements 
-* [docker-compose](https://github.com/AnyLog-co/documentation/blob/master/Docker%20Compose%20&%20Kubernetes.md)
-* [kompose](https://kompose.io/installation/) - A conversion tool for Docker Compose to container orchestrators such as Kubernetes (or OpenShift).
+## Requirements
 * [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/) - Kubernetes command line tool
-* [minikube](https://minikube.sigs.k8s.io/docs/start/) - local Kubernetes, focusing on making it easy to learn and develop for Kubernetes.
+* [helm charts](https://jaya-maduka.medium.com/install-helm-on-ubuntu-20-04-bd5f490c895)
+* [Sample Data Generator](https://github.com/AnyLog-co/Sample-Data-Generator) - AnyLog's sample data generator 
+* [AnyLog API](https://github.com/AnyLog-co/AnyLog-API) - AnyLog API tool to update 
 
-## Prepare Deployment
-Clone the deployments directory  
+## Deploy AnyLog Nodes
+### General Requirement - on all machines
+1. Clone deployments directory & checkout _aarana_ branch  
 ```bash
 cd $HOME
 git clone https://github.com/AnyLog-co/deployments
-cd $HOME/deployments 
+cd $HOME/deployments
+git checkout aarana 
 ```
 
-## Docker Compose 
-* Where to update deployment configurations [envs](docker-compose/envs/)
-  * [AnyLog Network](docker-compose/envs/anylog_node.env) 
-  * [AnyLog Tools](docker-compose/envs/anylog_tools.env) - Configuration for _AnyLog GUI_ and _Remote CLI_  
-  * [Postgres](docker-compose/envs/postgres.env)
-  * [Grafana](docker-compose/envs/grafana.env)
-  
-* How to start docker-compose
+2. Clone AnyLog-API directory - The AnyLog API has a set of 
+[requirements](https://github.com/AnyLog-co/Sample-Data-Generator/blob/master/requirements.txt%20) that should be met 
+for the run to succeed. 
 ```bash
-cd $HOME/deployments/docker-compose/ 
-docker-compose up -d 
+cd $HOME
+git clone https://github.com/AnyLog-co/AnyLog-API
 ```
 
-* cURL request against AnyLog-Network -- `anylog-node` service uses the `network_mode: host` rather than the network created by the network. As such, AnyLog uses the same IP(s) as the machine it seats on. 
+3. Login into AnyLog for downloading repos - [contact us](mailto:info@anylog.co) for _DOCKER_PASSWORD_ 
 ```bash
-curl -X GET ${YOUR_IP}:3481 -H "command: get status" -H "Usr-Agent: AnyLog/1.23"
+bash $HOME/deployments//credentials.sh ${DOCKER_PASSWORD}
 ```
 
-* How to attach to AnyLog
+### Master Node 
+**Master Node** is a "notary" system between other nodes in the network via either a public or private blockchain.
+The process will deploy a postgres database as well as an AnyLog node which will create a new database (called _blockchain_), 
+which will contain information about the nodes and tables in the network. All other nodes in the network will sync against it. 
+
+### Operator Node(s)
+**Operator Node(s)** contain the data that's coming from the sensors; thus when executing a query the results are generated 
+based on the information provided by the operator(s). For our demo, this section should be repeated 3 times on 3 different 
+machines. 
+
+### Query Node 
+**Query Node** is a node dedicated to querying operator nodes, as well as generating reports using BI tools.  
+1. On the same machine, or a machine that's accessible by the ndoe, install [Grafana](https://grafana.com/docs/grafana/latest/installation/) 
+or other BI tool in order to [generate reports](https://github.com/AnyLog-co/documentation/tree/os-dev/northbound%20connectors) 
+of the data.   
+
+   
+### Standalone 
+**Standalone Node** deplolies _master_ and _operator_ as a single AnyLog instance. For the offical deployment we wil not 
+be using this option. However, is avilable for testing purposes. 
+1. Deploy [Standalone Helm Chart](helm/anylog-standalone)
+    * Postgres 
+    * AnyLog Node with Master and Operator 
+    * [Remote-CLI](https://github.com/AnyLog-co/Remote-CLI) 
+    * [GUI](https://github.com/AnyLog-co/AnyLog-GUI)
 ```bash
-docker attach --detach-keys="ctrl-d" anylog-node
+helm install --generate-name $HOME/deployments/helm/anylog-standalone/
 ```
 
-* How to access Volume(s)
+2. Configure Remote Access to AnyLog Node
+```bash 
+minikube service --url anylog-node
+
+
+<< COMMENT
+http://192.168.49.2:31900 # TCP 
+http://192.168.49.2:31864 # REST 
+http://192.168.49.2:30260 # Broker 
+COMMENT 
+```
+
+3. Start Data Generator(s) - AnyLog uses message clients to digest the data coming in. Since the processes are 
+preconfigured, you cannot confuse between the two.
 ```bash
-# Locate the Mountpoint 
-docker volume inspect docker-compose_anylog-node-local-scripts 
-[
-    {
-        "CreatedAt": "2022-02-08T22:46:36Z",
-        "Driver": "local",
-        "Labels": {
-            "com.docker.compose.project": "docker-compose",
-            "com.docker.compose.version": "1.25.0",
-            "com.docker.compose.volume": "anylog-node-local-scripts"
-        },
-        "Mountpoint": "/var/lib/docker/volumes/docker-compose_anylog-node-local-scripts/_data",
-        "Name": "docker-compose_anylog-node-local-scripts",
-        "Options": null,
-        "Scope": "local"
-    }
-]
+# REST 
+python3 ~/Sample-Data-Generator/data_generator.py 192.168.49.2:31864 power post aarna_demo -e --topic power1
 
-# Use sudo command to access directory / files  
-sudo ls /var/lib/docker/volumes/docker-compose_anylog-node-local-scripts/_data
-hidden_node.al  local_script.al  master.al  mqtt.al  operator.al  publisher.al  query.al  rest_init.al  single_node.al  single_node_publisher.al
-```
-
-* How to stop docker-compose - when adding `-v` the the end of the command, user will also delete the volume(s)
-```commandline
-docker-compose down
-```
-
-## kubernetes / helm
-* Configure Credentials
-```bash
-bash $HOME/docker-compose/credentials.sh ${YOUR_PASSWDRD}
-```
-
-* Deploy Packages
-```bash
-# To deploy with kubernetes 
-kubectl apply -f $HOME/deployments/kube/
-
-# To deploy with helm 
-helm install --generate-name helm/anylogchart/
-```
-
-* Configure remote access for _Postgres_, _Grafana_, _AnyLog GUI_ and _Remote CLI_
-```bash
-bash $HOME/deployments/kube_port_access.sh ${LOCAL_IP}
-
-# Verification
-anylog@pc-ubuntu2004-k8:~/deployments$ ps fux 
-USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-anylog     74252  0.0  0.0  14056  5728 ?        S    00:18   0:01 sshd: anylog@pts/1
-anylog     74253  0.0  0.0  10136  6992 pts/1    Ss   00:18   0:00  \_ -bash
-anylog    104935  0.0  0.0   9260  3628 pts/1    R+   02:06   0:00      \_ ps fux
-anylog      1417  0.0  0.0  14060  5716 ?        S    Feb15   0:01 sshd: anylog@pts/0
-anylog      1418  0.0  0.0   8636  4532 pts/0    Ss+  Feb15   0:00  \_ -bash
-anylog    104020  0.1  0.4 751316 38540 pts/1    Sl   02:01   0:00 kubectl port-forward --address 10.0.0.212 service/anylog-gui 5000:5000
-anylog    104019  0.1  0.4 751060 38472 pts/1    Sl   02:01   0:00 kubectl port-forward --address 10.0.0.212 service/remote-cli 8000:8000
-anylog    104018  0.1  0.4 751316 39624 pts/1    Sl   02:01   0:00 kubectl port-forward --address 10.0.0.212 service/grafana 3000:3000
-anylog    104017  0.1  0.4 751316 39212 pts/1    Sl   02:01   0:00 kubectl port-forward --address 10.0.0.212 service/postgres 5432:5432
-anylog      1297  0.0  0.1  18648  9864 ?        Ss   Feb15   0:02 /lib/systemd/systemd --user
-anylog      1302  0.0  0.0 168876  3488 ?        S    Feb15   0:00  \_ (sd-pam)
-```
-
-* Configure Remote Access to AnyLog Node -- Get the external service URL to make a REST Call
-```bash
-anylog@pc-ubuntu2004-k8:~/deployments$ minikube service --url anylog-node
-http://192.168.49.2:31900
-http://192.168.49.2:31864
-http://192.168.49.2:30260
-
-# check 
-curl -X GET 192.168.49.2:31864 -H "command: get status" -H "User-Agent: AnyLog/1.23"  -w "\n"
-anylog-node@24.23.250.144:32048 running
-```
-**Note** - A node outside the kubernetes cluster will use the new IP and Ports
-
-* Attach to bash 
-```bash
-kubectl exec -it pod/${POD_NAME} -- bash
-```
-
-* To Stop
-```bash
-kubectl delete -f $HOME/deployments/kube/
+# Broker  
+python3 ~/Sample-Data-Generator/data_generator.py 192.168.49.2:30260 synchrophasor mqtt aarna_demo -e --topic power2
 ```
