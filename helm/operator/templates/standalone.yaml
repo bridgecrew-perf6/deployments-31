@@ -73,7 +73,7 @@ spec:
         app: anylog-standalone
     spec:
       imagePullSecrets:
-      - name: anylogregistrykey
+      - name: anylog-registry-key
       containers:
       - name: anylog-standalone
         image: anylogco/anylog-network:develop

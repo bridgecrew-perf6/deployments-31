@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: node-configuration
+  name: standalone-publisher-configuration
   labels:
     app: anylog-standalone-publisher
 data:
@@ -64,14 +64,14 @@ spec:
         app: anylog-standalone-publisher
     spec:
       imagePullSecrets:
-      - name: anylogregistrykey
+      - name: anylog-registry-key
       containers:
       - name: anylog-standalone-publisher
         image: anylogco/anylog-network:demo
         imagePullPolicy: IfNotPresent
         envFrom:
           - configMapRef:
-              name: node-configuration
+              name: standalone-publisher-configuration
         ports:
           - containerPort: 32248
             name: tcp
