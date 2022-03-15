@@ -138,3 +138,8 @@ curl -X GET ${NODE_IP}:${NODE_REST_PORT} -H "command: get processes" -H "User-Ag
 ```commandline
 curl -X GET ${NODE_IP}:${NODE_REST_PORT} -H "command: blockchain get *" -H "User-Agent: AnyLog/1.23" -w "\n"
 ```
+
+* Executing SQL query
+```commandline
+curl -X GET ${NODE_IP}:${NODE_REST_PORT} -H 'command: sql test format=table and stat=false and include=(battery, eswitch, inverter, pmu, synchrophasor) and extend=(@table_name as table) "select min(timestamp), max(timestamp), count(*) from solar"' -H "User-Agent: AnyLog/1.23" -H "destination: ${OPERATOR_IP}:${OPERATOR_REST_PORT}" 
+```
