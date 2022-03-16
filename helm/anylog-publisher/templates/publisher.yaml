@@ -35,16 +35,25 @@ metadata:
   labels:
     app: anylog-publisher
 spec:
+  type: NodePort
   ports:
-  - port: 32248
-    name: anylog-publisher-tcp
-  - port: 32249
-    name: anylog-publisher-rest
-  - port: 32250
-    name: anylog-publisher-broker
+  - name: anylog-publisher-tcp
+    protocol: TCP
+    port: 32248
+    targetPort: 32248
+    nodePort: 32248
+  - name: anylog-publisher-rest
+    protocol: TCP
+    port: 32249
+    targetPort: 32249
+    nodePort: 32249
+  - name: anylog-publisher-broker
+    protocol: TCP
+    port: 32250
+    targetPort: 32250
+    nodePort: 32250
   selector:
     app: anylog-publisher
-  type: NodePort
 ---
 apiVersion: apps/v1
 kind: StatefulSet

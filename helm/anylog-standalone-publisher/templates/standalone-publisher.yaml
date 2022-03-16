@@ -10,10 +10,10 @@ data:
   COMPANY_NAME: "AnyLog"
   #EXTERNAL_IP: <EXTERNAL IP>
   #LOCAL_IP: <LOCAL IP>
-  ANYLOG_SERVER_PORT: "32248"
-  ANYLOG_REST_PORT: "32249"
-  ANYLOG_BROKER_PORT: "32250"
-  MASTER_NODE: "anylog-standalone-publisher:32248"
+  ANYLOG_SERVER_PORT: "32048"
+  ANYLOG_REST_PORT: "32049"
+  ANYLOG_BROKER_PORT: "32050"
+  MASTER_NODE: "anylog-standalone-publisher:32048"
   SYNC_TIME: "30 second"
 
   # User should update DB_USER credentials
@@ -35,16 +35,25 @@ metadata:
   labels:
     app: anylog-standalone-publisher
 spec:
+  type: NodePort
   ports:
-  - port: 32248
-    name: anylog-standalone-publisher-tcp
-  - port: 32249
-    name: anylog-standalone-publisher-rest
-  - port: 32250
-    name: anylog-standalone-publisher-broker
+  - name: anylog-standalone-tcp
+    protocol: TCP
+    port: 32048
+    targetPort: 32048
+    nodePort: 32048
+  - name: anylog-standalone-rest
+    protocol: TCP
+    port: 32049
+    targetPort: 32049
+    nodePort: 32049
+  - name: anylog-standalone-broker
+    protocol: TCP
+    port: 32050
+    targetPort: 32050
+    nodePort: 32050
   selector:
     app: anylog-standalone-publisher
-  type: NodePort
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -73,9 +82,9 @@ spec:
           - configMapRef:
               name: standalone-publisher-configuration
         ports:
-          - containerPort: 32248
+          - containerPort: 32048
             name: tcp
-          - containerPort: 32249
+          - containerPort: 32049
             name: rest
-          - containerPort: 32250
+          - containerPort: 32050
             name: broker

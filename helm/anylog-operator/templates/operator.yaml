@@ -44,16 +44,25 @@ metadata:
   labels:
     app: anylog-operator
 spec:
+  type: NodePort
   ports:
-  - port: 32148
-    name: anylog-operator-tcp
-  - port: 32149
-    name: anylog-operator-rest
-  - port: 32150
-    name: anylog-operator-broker
+  - name: anylog-operator-tcp
+    protocol: TCP
+    port: 32148
+    targetPort: 32148
+    nodePort: 32148
+  - name: anylog-operator-rest
+    protocol: TCP
+    port: 32149
+    targetPort: 32149 
+    nodePort: 32149
+  - name: anylog-operator-broker
+    protocol: TCP
+    port: 32150
+    targetPort: 32150 
+    nodePort: 32150
   selector:
     app: anylog-operator
-  type: NodePort
 ---
 apiVersion: apps/v1
 kind: StatefulSet

@@ -44,16 +44,25 @@ metadata:
   labels:
     app: anylog-standalone
 spec:
+  type: NodePort
   ports:
-  - port: 32048
-    name: anylog-standalone-tcp
-  - port: 32049
-    name: anylog-standalone-rest
-  - port: 32050
-    name: anylog-standalone-broker
+  - name: anylog-standalone-tcp
+    protocol: TCP
+    port: 32048
+    targetPort: 32048
+    nodePort: 32048
+  - name: anylog-standalone-rest
+    protocol: TCP
+    port: 32049
+    targetPort: 32049
+    nodePort: 32049
+  - name: anylog-standalone-broker
+    protocol: TCP
+    port: 32050
+    targetPort: 32050
+    nodePort: 32050
   selector:
     app: anylog-standalone
-  type: NodePort
 ---
 apiVersion: apps/v1
 kind: StatefulSet
