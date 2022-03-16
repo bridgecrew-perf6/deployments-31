@@ -12,7 +12,7 @@ data:
   #LOCAL_IP: <LOCAL IP>
   ANYLOG_SERVER_PORT: "32348"
   ANYLOG_REST_PORT: "32349"
-  MASTER_NODE: "anylog-master:32048"
+  MASTER_NODE: "172.17.0.4:32048"
   SYNC_TIME: "30 second"
 
   # User should update DB_USER credentials
