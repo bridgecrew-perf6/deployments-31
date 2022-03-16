@@ -116,10 +116,30 @@ python3 /Users/orishadmon/Sample-Data-Generator/data_generator.py ${OPERATOR_1_I
 ## Sample Commands to validate connection & data
 * Get node status
 ```commandline
-curl -X GET ${NODE_IP}:${NODE_REST_PORT} -H "command: get status" -H "User-Agent: AnyLog/1.23"
+curl -X GET ${NODE_IP}:${NODE_REST_PORT} -H "command: get status" -H "User-Agent: AnyLog/1.23" -w "\n"
 ```
 
 * View data coming in
 ```commandline
-curl -X GET ${OPERATOR_IP}:${OPERATOR_REST_PORT} -H "command: get streaming" -H "User-Agent: AnyLog/1.23"
+curl -X GET ${OPERATOR_IP}:${OPERATOR_REST_PORT} -H "command: get streaming" -H "User-Agent: AnyLog/1.23" -w "\n"
+```
+
+* Validate data has been inserted
+```commandline
+curl -X GET ${OPERATOR_IP}:${OPERATOR_REST_PORT} -H "command: get rows count" -H "User-Agent: AnyLog/1.23" -w "\n"
+```
+
+* Get processes 
+```commandline
+curl -X GET ${NODE_IP}:${NODE_REST_PORT} -H "command: get processes" -H "User-Agent: AnyLog/1.23" -w "\n"
+```
+
+* Get blockchain
+```commandline
+curl -X GET ${NODE_IP}:${NODE_REST_PORT} -H "command: blockchain get *" -H "User-Agent: AnyLog/1.23" -w "\n"
+```
+
+* Executing SQL query
+```commandline
+curl -X GET ${NODE_IP}:${NODE_REST_PORT} -H 'command: sql test format=table and stat=false and include=(battery, eswitch, inverter, pmu, synchrophasor) and extend=(@table_name as table) "select min(timestamp), max(timestamp), count(*) from solar"' -H "User-Agent: AnyLog/1.23" -H "destination: ${OPERATOR_IP}:${OPERATOR_REST_PORT}" 
 ```
