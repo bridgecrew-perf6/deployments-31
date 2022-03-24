@@ -1,4 +1,4 @@
-# Based On: https://medium.com/@suyashmohan/setting-up-postgresql-database-on-kubernetes-24a2a192e962
+# https://grafana.com/docs/grafana/latest/installation/kubernetes/
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -14,30 +14,23 @@ data:
   GF_INSTALL_PLUGINS: simpod-json-datasource,grafana-worldmap-panel
 ---
 apiVersion: v1
-kind: Service
+kind: PersistentVolumeClaim
 metadata:
-  name: grafana
-  labels:
-    app: grafana
+  name: grafana-pvc
 spec:
-  type: NodePort
-  ports:
-  - name: grafana-port
-    protocol: TCP
-    port: 3000
-    targetPort: 3000
-  selector:
-    app: grafana
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: grafana
   labels:
     app: grafana
+  name: grafana
 spec:
-  serviceName: "grafana"
-  replicas: 1
   selector:
     matchLabels:
       app: grafana
@@ -46,13 +39,63 @@ spec:
       labels:
         app: grafana
     spec:
+      securityContext:
+        fsGroup: 472
+        supplementalGroups:
+          - 0
       containers:
-      - name: grafana
-        image: grafana/grafana:7.5.7
-        imagePullPolicy: IfNotPresent
-        envFrom:
-        - configMapRef:
-            name: grafana-configuration
-        ports:
-        - containerPort: 3000
-          name: grafana
+        - name: grafana
+          image: grafana/grafana:7.5.7
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: grafana-configuration
+          ports:
+            - containerPort: 3000
+              name: http-grafana
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /robots.txt
+              port: 3000
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 2
+          livenessProbe:
+            failureThreshold: 3
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            tcpSocket:
+              port: 3000
+            timeoutSeconds: 1
+          resources:
+            requests:
+              cpu: 250m
+              memory: 750Mi
+          volumeMounts:
+            - mountPath: /var/lib/grafana
+              name: grafana-pv
+      volumes:
+        - name: grafana-pv
+          persistentVolumeClaim:
+            claimName: grafana-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+spec:
+  type: NodePort
+  ports:
+    - name: http-grafana
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
+      nodePort: 3000
+  selector:
+    app: grafana
+  sessionAffinity: None
