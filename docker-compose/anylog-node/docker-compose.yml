@@ -1,4 +1,4 @@
-version: "2.4"
+version: "2.2"
 services:
   anylog-node:
     image: anylogco/anylog-network:predevelop
