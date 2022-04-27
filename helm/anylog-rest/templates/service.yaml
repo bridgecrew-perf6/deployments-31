@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: al-nvidia-rest
+  labels:
+    app: al-nvidia-rest
+spec:
+  type: NodePort
+  ports:
+  - name: al-nvidia-rest-tcp
+    protocol: TCP
+    port: 31048
+    targetPort: 31048
+    nodePort: 31048
+  - name: al-nvidia-rest-rest
+    protocol: TCP
+    port: 31049
+    targetPort: 31049
+    nodePort: 31049
+  selector:
+    app: al-nvidia-rest
