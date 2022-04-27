@@ -20,7 +20,7 @@ spec:
       containers:
       - name: al-nvidia-query
         image: nvcr.io/uazwwnrnci5h/anylog/anylog-network:demo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         envFrom:
           - configMapRef:
               name: query-configurations
