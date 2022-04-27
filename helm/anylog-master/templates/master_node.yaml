@@ -20,7 +20,7 @@ spec:
       containers:
       - name: al-nvidia-master
         image: nvcr.io/uazwwnrnci5h/anylog/anylog-network:demo
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         envFrom:
           - configMapRef:
               name: master-configurations
