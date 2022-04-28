@@ -1,0 +1,39 @@
+---
+# Defining the Kubernetes API version
+apiVersion: apps/v1
+# Defining the type of the object to create kind: Deployment
+# Metadata helps uniquely identify the object, including a name string, UID, and optional namespace.
+metadata:
+# nginx-deployment as the name of the deployment.
+  name: nginx-deployment
+# Labels are key/value pairs attached to objects, such as pods.
+# Labels are used to specify identifying attributes of objects that are relevant to users.
+  labels:
+    app: nginx-first-app
+spec:
+# replicas: 2 replicas allow you to define the number of pods you need for deployment
+  replicas: 2
+  selectors:
+    matchLabels:
+      app: nginx-first-app
+  template:
+    metadata:
+      labels:
+        app: nginx-first-app
+# spec: Allows you to specify the container details such as the image (nginx) container's name (nginx-pod)
+    spec:
+      containers:
+      - name: nginx-pod
+        image: nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+# nginx-service as the name of the service.  name: nginx-service
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: nginx-first-app
