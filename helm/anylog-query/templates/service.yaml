@@ -7,11 +7,11 @@ metadata:
 spec:
   type: NodePort
   ports:
-  - name: anylog-query-tcp
+  - name: query-tcp
     port: 32348
     targetPort: 32348
     nodePort: 32348
-  - name: anylog-query-rest
+  - name: query-rest
     port: 32349
     targetPort: 32349
     nodePort: 32349
