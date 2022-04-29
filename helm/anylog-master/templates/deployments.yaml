@@ -19,13 +19,19 @@ spec:
       - name: imagepullsecret
       containers:
       - name: anylog-master
-        image: anylogco/anylog-network:predevelop
+        image: nvcr.io/uazwwnrnci5h/anylog/anylog-network:demo
         imagePullPolicy: Always
         envFrom:
           - configMapRef:
               name: master-configurations
+        env:
+        - name: DB_PASSWD
+          valueFrom:
+            secretKeyRef:
+              name: master-secret-configs
+              key: DB_PASSWD
         ports:
           - containerPort: 32048
-            name: tcp
+            name: anylog-master-tcp
           - containerPort: 32049
-            name: rest
+            name: anylog-master-rest
