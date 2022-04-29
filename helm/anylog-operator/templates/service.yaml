@@ -1,19 +1,19 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: anylog-operator
+  name: anylog-cluster1-operator1
   labels:
-    app: anylog-operator
+    app: anylog-cluster1-operator1
 spec:
   type: NodePort
   ports:
-  - name: anylog-operator-tcp
+  - name: operator1-tcp
     port: 32148
     targetPort: 32148
     nodePort: 32148
-  - name: anylog-operator-rest
+  - name: operator1-rest
     port: 32149
     targetPort: 32149
     nodePort: 32149
   selector:
-    app: anylog-operator
+    app: anylog-cluster1-operator1
