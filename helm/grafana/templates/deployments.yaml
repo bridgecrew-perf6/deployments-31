@@ -23,5 +23,5 @@ spec:
             name: grafana-configuration
         ports:
         - containerPort: 3000
-          name: grafana
+          name: grafana-port
 
