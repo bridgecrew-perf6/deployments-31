@@ -23,12 +23,6 @@ spec:
         envFrom:
           - configMapRef:
               name: cluster1-operator1-configurations
-        env:
-          - name: DB_PASSWD
-            valueFrom:
-              secretKeyRef:
-                name: cluster1-operator1-secret-configurations
-                key: DB_PASSWD
         ports:
           - containerPort: 32148
             name: operator1-tcp

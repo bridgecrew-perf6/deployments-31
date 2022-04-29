@@ -12,7 +12,7 @@ data:
   #LOCAL_IP: <LOCAL IP>
   ANYLOG_SERVER_PORT: "32148"
   ANYLOG_REST_PORT: "32149"
-  MASTER_NODE: "100.115.6.85:32048"
+  MASTER_NODE: "100.115.6.90:32048"
   SYNC_TIME: "30 second"
 
   # An optional parameter for the number of workers threads that process requests which are send to the provided IP and Port.
@@ -24,11 +24,11 @@ data:
   # Sets the number of threads supporting queries (the default is 3).
   QUERY_POOL: "3"
 
-  # User should update DB_USER credentials
+# User should update DB_USER credentials
   DB_TYPE: "psql"
   DB_IP: "postgres"
   DB_USER: "admin"
-  DB_PORT: "5432"
+  DB_PASSWD: "demo"
   DEFAULT_DBMS: "nvidia"
 
   # NEW_CLUSTER -- cluster name
@@ -55,12 +55,3 @@ data:
   MQTT_COLUMN_VALUE: "bring [readings][][value]"
 
   DEPLOY_LOCAL_SCRIPT: "false"
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: cluster1-operator1-secret-configurations
-  labels:
-    app: anylog-cluster1-operator1
-data:
-  DB_PASSWD: ZGVtbwo= # passwd | base64
