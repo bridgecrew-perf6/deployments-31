@@ -22,7 +22,7 @@ spec:
         imagePullPolicy: IfNotPresent
         envFrom:
           - configMapRef:
-              name: cluster1-operator2-configurations
+              name: cluster2-operator1-configurations
         ports:
           - containerPort: 32158
             name: operator2-tcp
