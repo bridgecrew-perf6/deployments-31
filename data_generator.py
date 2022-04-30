@@ -102,11 +102,8 @@ def san_francisco()->list:
 
 
 def main():
-    san_jose = san_jose()
-    put_data(conn='localhost:32149', data_set=san_jose)
-
-    san_francisco = san_francisco()
-    put_data(conn='localhost:32159', data_set=san_francisco)
+    put_data(conn='localhost:32149', data_set=san_jose())
+    put_data(conn='localhost:32159', data_set=san_francisco())
 
 
 
