@@ -6,7 +6,7 @@ metadata:
     app: anylog-cluster3-operator1
 data:
   NODE_TYPE: "operator"
-  NODE_NAME: "nvidia-cluster3-operator1"
+  NODE_NAME: "nvidia-nodeC"
   COMPANY_NAME: "Nvidia"
   #EXTERNAL_IP: "100.115.6.64"
   #LOCAL_IP: <LOCAL IP>
