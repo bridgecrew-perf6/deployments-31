@@ -12,7 +12,7 @@ data:
   #LOCAL_IP: <LOCAL IP>
   ANYLOG_SERVER_PORT: "32148"
   ANYLOG_REST_PORT: "32149"
-  MASTER_NODE: "100.115.6.67:32048"
+  MASTER_NODE: "100.115.6.85:32048"
   SYNC_TIME: "30 second"
 
   # An optional parameter for the number of workers threads that process requests which are send to the provided IP and Port.
