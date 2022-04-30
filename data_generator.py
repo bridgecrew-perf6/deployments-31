@@ -4,6 +4,9 @@ import random
 import requests
 
 
+TIMESTAMP = datetime.datetime.strptime('2022-04-30 18:34:57.453216', '%Y-%m-%d %H:%M:%S.%f')
+
+
 def put_data(conn:str, data_set:list)->bool:
     """
     Execute PUT command
@@ -53,17 +56,19 @@ def san_jose()->list:
         'timestamp': None,
         'speed': None
     }
+
     for i in range(1000):
         if random.random() > 0.5:
             value_dict['speed'] = round(random.randrange(55, 75, 1) + random.random(), 2)
         else:
             value_dict['speed'] = round(random.randrange(55, 75, 1) - random.random(), 2)
 
-        value_dict['timestamp'] = datetime.datetime.now() - datetime.timedelta(days=int(random.randrange(1, 30, 1)),
-                                                                               hours=int(random.randrange(0, 25, 1)),
-                                                                               minutes=int(random.randrange(0, 59, 1)),
-                                                                               seconds=int(random.randrange(0, 59, 1)))
-        value_dict['timestamp'] = value_dict['timestamp'].strftime('%Y-%m-%d %H:%M:%S.%f')
+        value_dict['timestamp'] = TIMESTAMP - datetime.timedelta(days=int(random.randrange(1, 30, 1)),
+                                                                 hours=int(random.randrange(0, 25, 1)),
+                                                                 minutes=int(random.randrange(0, 59, 1)),
+                                                                 seconds=int(random.randrange(0, 59, 1)))
+
+        value_dict['timestamp'] = value_dict['timestamp'].strftime('%Y-%m-%dT%H:%M:%S.%fZ')
         data.append(json.dumps(value_dict))
 
     return data
@@ -91,10 +96,11 @@ def san_francisco()->list:
         else:
             value_dict['speed'] = round(random.randrange(50, 70, 1) - random.random(), 2)
 
-        value_dict['timestamp'] = datetime.datetime.now() - datetime.timedelta(days=int(random.randrange(1, 30, 1)),
-                                                                               hours=int(random.randrange(0, 25, 1)),
-                                                                               minutes=int(random.randrange(0, 59, 1)),
-                                                                               seconds=int(random.randrange(0, 59, 1)))
+        value_dict['timestamp'] = TIMESTAMP - datetime.timedelta(days=int(random.randrange(1, 30, 1)),
+                                                                 hours=int(random.randrange(0, 25, 1)),
+                                                                 minutes=int(random.randrange(0, 59, 1)),
+                                                                 seconds=int(random.randrange(0, 59, 1)))
+
         value_dict['timestamp'] = value_dict['timestamp'].strftime('%Y-%m-%d %H:%M:%S.%f')
         data.append(json.dumps(value_dict))
 
@@ -104,7 +110,6 @@ def san_francisco()->list:
 def main():
     put_data(conn='localhost:32149', data_set=san_jose())
     put_data(conn='localhost:32159', data_set=san_francisco())
-
 
 
 if __name__ == '__main__':
