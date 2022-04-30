@@ -1,4 +1,4 @@
-DESTINATIONS=$(curl -X GET localhost:32349 -H 'command: blockchain get operator bring [operator][local_ip] : [operator][port] separator=,' -H "User-Agent: AnyLog/1.23" -w "\n")
+DESTINATIONS=$(curl -X GET localhost:32349 -H 'command: blockchain get operator bring [operator][local_ip] : [operator][port] separator=,' -H "User-Agent: AnyLog/1.23" -w "\n" 2> /dev/null)
 
 read -p "From a single point -- get information on any machine in the network"
 printf "\n"
@@ -74,7 +74,7 @@ printf "\n"
 
 read -p "From a single point -- 101 N X University Ave."
 printf "\n"
-DESTINATION=$(curl -X GET localhost:32349 -H 'command: blockchain get operator where name=nvidia-nodeA bring [operator][local_ip] : [operator][port] ' -H "User-Agent: AnyLog/1.23" -w "\n")
+DESTINATION=$(curl -X GET localhost:32349 -H 'command: blockchain get operator where name=nvidia-nodeA bring [operator][local_ip] : [operator][port] ' -H "User-Agent: AnyLog/1.23" -w "\n" 2> /dev/null)
 curl -X GET localhost:32349 -H "command: sql nvidia format=table select intersection, timestamp, speed FROM traffic_data WHERE intersection='101 N / University Ave' ORDER BY timestamp DESC " -H "User-Agent: AnyLog/1.23" -H "destination: ${DESTINATION}"
 printf "\n"
 printf "\n"
