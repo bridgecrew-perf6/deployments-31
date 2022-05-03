@@ -177,6 +177,12 @@ def main():
     :params:
         conn_list:list - list of connections
         location:str - physical location of where data is coming from
+    :sample-call:
+        # Store both sets of data under the same table name
+        python3 data_generator.py 127.0.0.1:2149,127.0.0.1:2159 --db-name sunlight --table-name traffic_data
+
+        # Store both sets of data under the different table names
+        python3 data_generator.py 127.0.0.1:2149,127.0.0.1:2159 --db-name sunlight
     """
     parser = argparse.ArgumentParser()
     parser.add_argument('conn', type=str, default='127.0.0.1:2049', help='comma separated REST connection information')
