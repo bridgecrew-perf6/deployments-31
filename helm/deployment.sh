@@ -15,7 +15,9 @@ printf "\n\t -- Deploy Operator2 --\n"
 helm fetch https://github.com/AnyLog-co/deployments/raw/nvidia/helm/packages/anylog-operator2-1.0220301.tgz
 helm install anylog-operator2-1.0220301.tgz --generate-name
 
-sleep 40
+python3 $HOME/anylog/data_generator.py
+
+sleep 60
 
 printf "\n\t -- Deploy Query -- \n"
 helm fetch https://github.com/AnyLog-co/deployments/raw/nvidia/helm/packages/anylog-query-1.0220301.tgz
