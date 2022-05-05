@@ -15,7 +15,7 @@ spec:
         app: anylog-cluster2-operator1
     spec:
       imagePullSecrets:
-      - name: imagepullsecret
+      - name: imagepullsecret2
       containers:
       - name: anylog-cluster2-operator1
         image: nvcr.io/uazwwnrnci5h/anylog/anylog-network:demo

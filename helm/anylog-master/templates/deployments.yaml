@@ -15,7 +15,7 @@ spec:
         app: anylog-master
     spec:
       imagePullSecrets:
-      - name: imagepullsecret
+      - name: imagepullsecret2
       containers:
       - name: anylog-master
         image: nvcr.io/uazwwnrnci5h/anylog/anylog-network:demo

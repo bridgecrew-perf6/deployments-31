@@ -23,6 +23,4 @@ helm install anylog-query-1.0220301.tgz --generate-name
 
 cd $HOME
 
-printf "\n\n"
-curl -X GET localhost:32349 -H "command: blockchain get *" -H "User-Agent: AnyLog/1.23"
 
