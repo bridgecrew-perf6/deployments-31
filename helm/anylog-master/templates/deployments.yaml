@@ -15,10 +15,11 @@ spec:
         app: anylog-master
     spec:
       imagePullSecrets:
-      - name: imagepullsecret2
+      - name: imagepullsecret
       containers:
       - name: anylog-master
-        image: nvcr.io/uazwwnrnci5h/anylog/anylog-network:demo
+        #image: nvcr.io/uazwwnrnci5h/anylog/anylog-network:demo
+        image: anylogco/anylog-network:test 
         imagePullPolicy: Always
         envFrom:
           - configMapRef:
