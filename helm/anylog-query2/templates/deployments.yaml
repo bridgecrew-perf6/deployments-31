@@ -18,7 +18,7 @@ spec:
       - name: imagepullsecret2
       containers:
       - name: anylog-query2
-        image: nvcr.io/uazwwnrnci5h/anylog/anylog-network:demo
+        image: nvcr.io/uazwwnrnci5h/anylog/anylog-network:predevelop
         #image: anylogco/anylog-network:test 
         imagePullPolicy: Always
         envFrom:
