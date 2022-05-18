@@ -8,7 +8,7 @@ data:
   NODE_TYPE: "operator"
   NODE_NAME: "nvidia-nodeA"
   COMPANY_NAME: "Nvidia"
-  EXTERNAL_IP: "100.109.80.0" 
+  EXTERNAL_IP: "cluster1-operator1-service.default.svc.cluster.local" 
   #LOCAL_IP: <LOCAL IP>
   ANYLOG_SERVER_PORT: "32148"
   ANYLOG_REST_PORT: "32149"
