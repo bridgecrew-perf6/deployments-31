@@ -25,10 +25,7 @@ data:
   QUERY_POOL: "3"
 
 # User should update DB_USER credentials
-  DB_TYPE: "psql"
-  DB_IP: "postgres"
-  DB_USER: "admin"
-  DB_PASSWD: "demo"
+  DB_TYPE: "sqlite"
   DEFAULT_DBMS: "nvidia"
 
   # NEW_CLUSTER -- cluster name
