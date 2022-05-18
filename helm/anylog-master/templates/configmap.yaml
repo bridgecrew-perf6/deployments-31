@@ -25,11 +25,7 @@ data:
   QUERY_POOL: "3"
 
   # User should update DB_USER credentials
-  DB_TYPE: "psql"
-  DB_IP: "postgres"
-  DB_USER: "admin"
-  DB_PASSWD: "demo"
-  DB_PORT: "5432"
+  DB_TYPE: "sqlite"
 
   MQTT_ENABLE: "false"
   DEPLOY_LOCAL_SCRIPT: "false"
