@@ -1,5 +1,5 @@
 #----------------------------------------------------------------------------------------------------------------------
-# The following are the general values used to deploy an AnyLog instance of type: Master | AnyLog version: predevelop
+# The following are the general values used to deploy an AnyLog instance of type: REST | AnyLog version: develop
 #----------------------------------------------------------------------------------------------------------------------
 general:
   namespace: default
@@ -19,7 +19,7 @@ configs:
   basic:
     node_type: master
     node_name: anylog-master-node
-    company_name: Aarna Networks
+    company_name: Aarna Network
     # if location is not set, will use `https://ipinfo.io/json` to get coordinates
     location: ""
   networking:

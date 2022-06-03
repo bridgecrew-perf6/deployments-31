@@ -1,5 +1,5 @@
 #----------------------------------------------------------------------------------------------------------------------
-# The following are the general values used to deploy an AnyLog instance of type: Operator 2 | AnyLog version: predevelop
+# The following are the general values used to deploy an AnyLog instance of type: REST | AnyLog version: develop
 #----------------------------------------------------------------------------------------------------------------------
 general:
   namespace: default
@@ -13,13 +13,15 @@ image:
   secretName: imagepullsecret
   repository: anylogco/anylog-network
   tag: predevelop
+#  repository: nvcr.io/uazwwnrnci5h/anylog/anylog-network
+#  tag: predevelop
   pullPolicy: Always
 
 configs:
   basic:
     node_type: operator
     node_name: anylog-operator-node2
-    company_name: Aarna Networks
+    company_name: Aarna Network
     # if location is not set, will use `https://ipinfo.io/json` to get coordinates
     location: ""
   networking:
@@ -37,7 +39,7 @@ configs:
     user: ""
     password: ""
   blockchain:
-    master_node: 52.53.219.199:32048
+    master_node: 54.67.8.195:32048
     sync_time: 30 seconds
     source: master
     destination: file
