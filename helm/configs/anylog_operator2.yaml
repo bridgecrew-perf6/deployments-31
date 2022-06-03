@@ -39,7 +39,7 @@ configs:
     user: ""
     password: ""
   blockchain:
-    master_node: 54.67.8.195:32048
+    ledger_conn: 54.67.8.195:32048
     sync_time: 30 seconds
     source: master
     destination: file
