@@ -1,0 +1,20 @@
+version: "2.2"
+services:
+  anlog-query-node:
+    image: ${IMAGE}:${VERSION}
+    env_file:
+      - ${ENV_FILE}
+    container_name: ${CONTAINER_NAME}
+    stdin_open: true
+    tty: true
+    network_mode: "host" 
+    volumes:
+      - anlog-query-node-anylog:/app/AnyLog-Network/anylog
+      - anlog-query-node-blockchain:/app/AnyLog-Network/blockchain
+      - anlog-query-node-data:/app/AnyLog-Network/data
+      - anlog-query-node-local-scripts:/app/AnyLog-Network/scripts
+volumes:
+  anlog-query-node-anylog:
+  anlog-query-node-blockchain:
+  anlog-query-node-data:
+  anlog-query-node-local-scripts:
